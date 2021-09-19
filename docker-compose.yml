@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  api-postgres:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: Qwerty000
+      POSTGRES_DB: test
+      POSTGRES_HOST: localhost
+      POSTGRES_PORT: 5432
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+#    ports:
+#      - 5432:5432
+  api:
+    ports:
+      - 8000:8000
+    image: site
+    build: .
+    depends_on:
+      - api-postgres
+    env_file:
+      - .env
+    stdin_open: true
+    tty: true
